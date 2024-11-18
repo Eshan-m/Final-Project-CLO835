@@ -1,20 +1,57 @@
 <!doctype html>
-<title>Hello from Flask</title>
-<body style="background: {{ color }};"></body>
-<div style="color: #e4e4e4;
-    text-align:  center;
-    height: 90px;
-    vertical-align:  middle;">
-{% if name %}
-  <h1>Hello from {{ name }}!</h1>
-{% else %}
-  <h1>Hello From CLO835!</h1>
-{% endif %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Hello from Flask</title>
+    <style>
+        body {
+            background-image: url('{{ background_image }}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #e4e4e4;
+            text-align: center;
+        }
 
-  {% if contents %}
-  <textarea rows="10" cols="50">
-    {{ contents }}
-  </textarea>
-  {% endif %}
+        .content {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+        }
 
-</div>
+        h1 {
+            font-size: 2em;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            color: #333;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        {% if name %}
+            <h1>Hello from {{ name }}!</h1>
+        {% else %}
+            <h1>Hello From CLO835!</h1>
+        {% endif %}
+
+        {% if contents %}
+            <textarea rows="10" cols="50" readonly>{{ contents }}</textarea>
+        {% endif %}
+    </div>
+</body>
+</html>
