@@ -7,6 +7,7 @@ RUN set -xe \
     && apt-get install -y python3-pip \
     && apt-get install -y mysql-client 
 RUN pip install --upgrade pip
+RUN pip install werkzeug==0.16.1
 RUN pip install -r requirements.txt
 EXPOSE 8080
 ENTRYPOINT [ "python3" ]

@@ -7,12 +7,17 @@ import argparse
 
 app = Flask(__name__)
 
-DBHOST = os.environ.get("DBHOST") or "localhost"
-DBUSER = os.environ.get("DBUSER") or "root"
-DBPWD = os.environ.get("DBPWD") or "passwors"
-DATABASE = os.environ.get("DATABASE") or "employees"
+#DBHOST = os.environ.get("DBHOST") or "localhost"
+#DBUSER = os.environ.get("DBUSER") or "root"
+#DBPWD = os.environ.get("DBPWD") or "password"
+#DATABASE = os.environ.get("DATABASE") or "employees"
 COLOR_FROM_ENV = os.environ.get('APP_COLOR') or "lime"
-DBPORT = int(os.environ.get("DBPORT"))
+#DBPORT = int(os.environ.get("DBPORT"))
+DBHOST = os.environ.get("DBHOST") or "mysql"  # Should resolve to 'mysql'
+DBUSER = os.environ.get("DBUSER") or "root"
+DBPWD = os.environ.get("DBPWD") or "password"
+DATABASE = os.environ.get("DATABASE") or "employees"
+DBPORT = int(os.environ.get("DBPORT", 3306))  # Add default value
 
 # Create a connection to the MySQL database
 db_conn = connections.Connection(
