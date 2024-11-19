@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+  namespace: final  # Replace with your namespace if different
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - name: flask-app
+        image: my_app:latest  # Replace with your actual Docker image URL, e.g., docker.io/username/my_app:latest
+        #imagePullPolicy: Always  #when ECR pull
+        imagePullPolicy: Never  # Local pull
+        ports:
+        - containerPort: 81  # Flask app runs on port 81 in the container
+        env:
+        - name: MY_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: MY_NAME
+        - name: S3_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: S3_BUCKET
+        - name: S3_IMAGE_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: S3_IMAGE_KEY
+        - name: DB_HOST
+          value: "mysql-service"  # This matches the service name for MySQL in the cluster
+        - name: DB_PORT
+          value: "3306"  # The port MySQL is running on
