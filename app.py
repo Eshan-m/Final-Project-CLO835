@@ -10,7 +10,7 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # Database configurations
-DBHOST = os.environ.get("DBHOST") or "mysql"
+DBHOST = os.environ.get("DBHOST") or "mysql-service"
 DBUSER = os.environ.get("DBUSER") or "root"
 DBPWD = os.environ.get("DBPWD") or "password"
 DATABASE = os.environ.get("DATABASE") or "employees"

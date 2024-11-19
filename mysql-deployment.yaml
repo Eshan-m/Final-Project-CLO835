@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:8.0  # Official MySQL image
+        image: my_db:latest  # Official MySQL image
         imagePullPolicy: Never  # Local pull
         ports:
         - containerPort: 3306
