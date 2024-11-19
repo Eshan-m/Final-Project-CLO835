@@ -9,6 +9,6 @@ spec:
   ports:
     - protocol: TCP
       port: 80          # External port for browser access
-      targetPort: 81    # Flask app's internal port
+      targetPort: 8080    # Flask app's internal port
       nodePort: 30001   # NodePort to expose the app on Cloud9, choose a port above 30000
   type: NodePort       # Ensures that the service is accessible externally

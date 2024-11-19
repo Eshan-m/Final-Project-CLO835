@@ -15,12 +15,44 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: my_db:latest  # Replace with your actual MySQL Docker image
-        #imagePullPolicy: Always  #when ECR pull
+        image: mysql:8.0  # Official MySQL image
         imagePullPolicy: Never  # Local pull
-
         ports:
         - containerPort: 3306
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: "password"  # Replace with a more secure password in production
+          value: "password"
+        - name: MYSQL_DATABASE
+          value: "employees" 
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-data
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  namespace: final
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  namespace: final
+spec:
+  selector:
+    app: mysql
+  ports:
+    - port: 3306
+      targetPort: 3306
+  clusterIP: None  # Optional, can be used if a headless service is required

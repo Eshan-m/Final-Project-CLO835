@@ -78,6 +78,6 @@ def about():
 if __name__ == "__main__":
     try:
         logging.info("Starting Flask application...")
-        app.run(host="0.0.0.0", port=81)
+        app.run(host="0.0.0.0", port=8080)
     except Exception as e:
         logging.error(f"Error running the Flask application: {e}")
