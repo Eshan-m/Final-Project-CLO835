@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: final  # Replace with your namespace if different
+data:
+  MY_NAME: "GROUP_5"  # Replace with your actual name
+  S3_BUCKET: "finalproject22"  # Replace with the name of your S3 bucket
+  S3_IMAGE_KEY: "s3://finalproject22/background.jpg"  # Replace with the S3 object key of the image

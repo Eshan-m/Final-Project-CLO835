@@ -6,7 +6,7 @@
     <title>Add Employee Information</title>
     <style>
         body {
-            background-image: url('{{background_image}}');
+            background-image: url('{{ background_image }}');
             background-size: cover;
             background-repeat: no-repeat;
             font-family: Avenir, sans-serif;
@@ -16,6 +16,12 @@
         h1 {
             color: DodgerBlue;
             text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 18px;
+            color: grey;
         }
 
         .form-container {
@@ -76,7 +82,8 @@
     </style>
 </head>
 <body>
-    <h1>Employee Database</h1>
+    <h1>Welcome to {{ MY_NAME }}'s Employee Database</h1>
+    <h2>Fill in the details below to add an employee</h2>
     <div class="form-container">
         <form action="/addemp" method="POST" autocomplete="on" enctype="multipart/form-data">
             <label for="emp_id">Employee ID:</label>
