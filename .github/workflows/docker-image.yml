@@ -56,7 +56,7 @@ jobs:
        ECR_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/webapp
 
         # Build the webapp image
-        docker build -t  $ECR_URI
+        docker build -t  webapp .
         
         # Tag the image for ECR
         docker tag webapp:latest $ECR_URI:latest
