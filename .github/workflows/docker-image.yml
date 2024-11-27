@@ -17,11 +17,45 @@ jobs:
     - name: Build the Docker image
      
 
-#Access to ECR Repo
+
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: us-east-1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+        aws-region: us-east-1
+
+
+    - name: Log in to Amazon ECR push to mysql
+      run: |
+       ECR_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/mysql
+
+        # Build the mysql image
+        docker build -t mysql .
+        
+        # Tag the image for ECR
+        docker tag mysql:latest $ECR_URI:latest
+        
+         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_URI
+
+        # Push the image to ECR
+          docker push $ECR_URI:latest
+
+
+    - name: Log in to Amazon ECR push to webapp
+      run: |
+       ECR_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/webapp
+
+        # Build the webapp image
+        docker build -t webapp .
+        
+        # Tag the image for ECR
+        docker tag webapp:latest $ECR_URI:latest
+        
+         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_URI
+
+        # Push the image to ECR
+          docker push $ECR_URI:latest
