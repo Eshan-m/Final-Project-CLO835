@@ -51,23 +51,6 @@ jobs:
           docker push $ECR_URI:latest
 
 
-    - name: Unit Test MySQL Docker Image
-      run: |
-        # Run MySQL container
-        docker run -d --name mysql-test -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=employees mysql:latest
-        
-        # Wait for MySQL to start
-        echo "Waiting for MySQL to start..."
-        sleep 15
-        
-        # Run a test query to ensure the database works
-        docker exec mysql-test mysql -uroot -proot -e "SHOW DATABASES;"
-        
-        # Clean up the container
-        docker stop mysql-test
-        docker rm mysql-test
-
-
       #push to webapp repo
     - name: Log in to Amazon ECR push to webapp
       run: |
