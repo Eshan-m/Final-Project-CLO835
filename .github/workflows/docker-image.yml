@@ -63,9 +63,8 @@ jobs:
         
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_URI
 
-
         # unit test
-        docker run -d -p 80:81 --name webapp-front $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker run -d -p 80:81 --name webapp $ECR_URI:latest
         docker ps
         echo "Pause for 10 seconds to let container start"
         sleep 10
