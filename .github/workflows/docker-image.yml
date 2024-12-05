@@ -1,21 +1,29 @@
-name: Deploy to ECR
+name: Docker Image CI
 
-on: 
+on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
+ 
 
 jobs:
-  
   build:
-    
-    name: Build Image
     runs-on: ubuntu-latest
-    
-    steps:
 
-    - name: Check out code
-      uses: actions/checkout@v2
-      
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # Optional; include only if using temporary credentials
+         aws-region: us-east-1
+
+#Login to ECR
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
@@ -23,35 +31,36 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
         AWS_REGION: us-east-1
-        
-    - name: Build, test, tag, and push web application image to Amazon ECR  
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: clo835_final_project_app
-        IMAGE_TAG: v1.0
+
+
+    - name: Log in to Amazon ECR push to mysql
       run: |
-        # Docker build
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f docker/dockerfile docker/
-        # Unit test
-        docker run -d -p 81:81 --name webapp $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+       ECR_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/mysql
+        # Build the mysql image
+        docker build -t mysql .
+        
+        # Tag the image for ECR
+        docker tag mysql:latest $ECR_URI:latest
+        
+         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_URI
+        # Push the image to ECR
+          docker push $ECR_URI:latest
+    - name: Log in to Amazon ECR push to webapp
+      run: |
+       ECR_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/webapp
+        # Build the webapp image
+        docker build -t  webapp .
+        
+        # Tag the image for ECR
+        docker tag webapp:latest $ECR_URI:latest
+        
+        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_URI
+        # unit test
+        docker run -d -p 80:81 --name webapp $ECR_URI:latest
         docker ps
         echo "Pause for 10 seconds to let container start"
         sleep 10
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        
-    - name: Build, test, tag, and push mysql db image to Amazon ECR  
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: clo835_final_project_db
-        IMAGE_TAG: v1.0
-      run: |
-        # Docker build
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f docker/dockerfile_mysql docker/
-        # Unit test
-        docker run -d -p 81:81 --name mysqlapp $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        docker ps
-        echo "Pause for 10 seconds to let container start"
-        sleep 10
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-      
+        # Push the image to ECR
+          docker push $ECR_URI:latest
