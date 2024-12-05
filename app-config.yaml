@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: app-config
-  namespace: final
-data:
-  MY_NAME: "GROUP_5"  # Team or group name
-  S3_BUCKET: "finalproject22"  # Name of the S3 bucket
-  S3_IMAGE_KEY: "background.jpg"  # Path to the image in the S3 bucket (use only the key, not the full URL)

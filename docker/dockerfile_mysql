@@ -1,0 +1,9 @@
+# Use the official MySQL 8.0 image as the base image
+FROM mysql:8.0
+
+# Copy the "mysql.sql" file from the local directory to "/tmp" inside the container
+COPY ./mysql.sql /tmp
+
+# Specify the command to run when the container starts: initialize the MySQL server
+# with the SQL file provided earlier
+CMD [ "mysqld", "--init-file=/tmp/mysql.sql" ]
