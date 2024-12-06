@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sql-data-claim
+  namespace: final
+  annotations:
+    volume.beta.kubernetes.io/storage-class: gp2
+spec:
+  accessModes:
+  - ReadWriteOnce
+  volumeName: manual-pv
+  resources:
+    requests:
+      storage: 2Gi
