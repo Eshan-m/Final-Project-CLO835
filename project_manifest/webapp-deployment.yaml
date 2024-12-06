@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  labels:
+    app.kubernetes.io/name: webapp
+    app.kubernetes.io/component: frontend
+spec:
+  selector:
+    matchLabels:
+      app: employees
+      version: v1
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: employees
+        version: v1
+    spec:
+      containers:
+      - name: web-app-pod
+        image: 690612321301.dkr.ecr.us-east-1.amazonaws.com/web-application-image-repo:v2.0
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:
+        - name: DBHOST
+          value: "10.244.0.13"
+        - name: DBPORT
+          value: "3306"
+        - name: DBPWD
+          value: "vedha.123"
+        ports:
+        - containerPort: 8080
