@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql-db-pod
+  namespace: final
+  labels:
+    app.kubernetes.io/name: mysql
+    app.kubernetes.io/component: backend
+spec:
+  containers:
+    - name: mysql-db
+      image: 209830628404.dkr.ecr.us-east-1.amazonaws.com/clo835_final_project_db:v1.0
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 3306
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "pw"
+    imagePullSecrets:
+      - name: regcred

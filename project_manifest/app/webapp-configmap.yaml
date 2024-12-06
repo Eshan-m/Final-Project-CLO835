@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webapp-configmap
+  namespace: final
+data:
+  BACKGROUND_IMAGE_URL: http://18.212.160.21:30000/download/avengers.jpg
+  YOUR_NAME: SENECA_GROUP05

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-container-service
+  namespace: final
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 81
+      targetPort: 81
+  selector:
+    app.kubernetes.io/name: webapp
+  type: LoadBalancer
