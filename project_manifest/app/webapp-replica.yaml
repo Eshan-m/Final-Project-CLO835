@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: webapp-replica
+  namespace: final
+  labels:
+    app: employees
+    version: v1
+    app.kubernetes.io/name: webapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+        app: employees
+        version: v1
+        app.kubernetes.io/name: webapp
+  template:
+    metadata:
+      labels:
+          app: employees
+          version: v1
+          app.kubernetes.io/name: webapp
+    spec:
+      containers:
+      - image: 209830628404.dkr.ecr.us-east-1.amazonaws.com/clo835_final_project_app:v1.0
+        name: webapp-pod
+        ports:
+        - containerPort: 81
+        env:
+        - name: DBHOST
+          value: mysql-service.final.svc.cluster.local
+        - name: DBPORT
+          value: "3306"
+        - name: DBUSER
+          value: root
+        - name: DBPWD
+          value: "pw"
+      imagePullSecrets:
+        - name: regcred
