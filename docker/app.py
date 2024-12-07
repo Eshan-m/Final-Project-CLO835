@@ -5,7 +5,7 @@ import random
 import argparse
 import boto3
 
-BUCKET = "eks-bucket07"
+BUCKET = "eks-bucket08"
 
 
 app = Flask(__name__)
@@ -13,7 +13,7 @@ app = Flask(__name__)
 DBHOST = os.environ.get("DBHOST") or "localhost"
 DBUSER = os.environ.get("DBUSER") or "root"
 DBPWD = os.environ.get("DBPWD") or "passwors"
-BACKGROUND_IMAGE_URL = os.environ.get("BACKGROUND_IMAGE_URL") or "http://18.212.160.21:8080/download/ilovecats.jpg"
+BACKGROUND_IMAGE_URL = os.environ.get("BACKGROUND_IMAGE_URL") or "http://52.71.247.103:8080/download/ilovecats.png"
 YOUR_NAME = os.environ.get("YOUR_NAME") or "Group 05"
 DATABASE = os.environ.get("DATABASE") or "employees"
 COLOR_FROM_ENV = os.environ.get('APP_COLOR') or "lime"
